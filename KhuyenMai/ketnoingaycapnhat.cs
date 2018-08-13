@@ -86,7 +86,7 @@ namespace KhuyenMai
         }
         public string tongmaKM()
         {
-            string sql = "SELECT tongmaKM FROM ngaycapnhat";
+            string sql = "SELECT tongmakhuyenmai FROM ngaycapnhat";
             string h = null;
 
             Open();
@@ -119,7 +119,7 @@ namespace KhuyenMai
         }
         public void capnhattongmaKM(string tongma)
         {
-            string sql = "update ngaycapnhat set tongmaKM='" + tongma + "'";
+            string sql = "update ngaycapnhat set tongmakhuyenmai='" + tongma + "'";
 
             Open();
             SQLiteCommand cmd = new SQLiteCommand(sql, connection);

@@ -168,7 +168,7 @@ namespace KhuyenMai
         }
         public string laytongsomaKM()
         {
-            string sql = "SELECT tongmaKM FROM ngaycapnhat";
+            string sql = "SELECT tongmakhuyenmai FROM ngaycapnhat";
             string h = null;
 
             Open();

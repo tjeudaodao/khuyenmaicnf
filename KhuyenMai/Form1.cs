@@ -64,15 +64,15 @@ namespace KhuyenMai
                 try
                 {
                     Thread.Sleep(200);
-                    string ngay = null;
-                    string ngaydata = null;
+                    string ngaykmSV = null;
+                    string ngaydataSV = null;
                     string tongmaKMSV = null;
                     try
                     {
                         var con = ketnoi.Khoitao();
-                         ngay = con.layngaycapnhat();
-                         ngaydata = con.layngayData();
-                        tongmaKMSV = con.laytongsomaKM();
+                         ngaykmSV = con.layngaycapnhat();
+                         ngaydataSV = con.layngayData();
+                         tongmaKMSV = con.laytongsomaKM();
                     }
                     catch (Exception)
                     {
@@ -87,9 +87,9 @@ namespace KhuyenMai
 
 
                     string tongmaKMCL = consqlite.tongmaKM();
-                    string ngaykm2 = consqlite.layngaycapnhat();
-                    string ngaydata2 = consqlite.layngayData();
-                    if (ngaykm2 != ngay || tongmaKMSV != tongmaKMCL)
+                    string ngaykmCL = consqlite.layngaycapnhat();
+                    string ngaydataCL = consqlite.layngayData();
+                    if (ngaykmCL != ngaykmSV || tongmaKMSV != tongmaKMCL)
                     {
                         try
                         {
@@ -111,9 +111,9 @@ namespace KhuyenMai
                                 }));
                                 lbcapnhat.Invoke(new MethodInvoker(delegate ()
                                 {
-                                    lbcapnhat.Text = ngay;
+                                    lbcapnhat.Text = ngaykmSV;
                                 }));
-                                consqlite.capnhatngayKM(ngay);
+                                consqlite.capnhatngayKM(ngaykmSV);
                                 consqlite.capnhattongmaKM(tongmaKMSV);
                             }
                             catch (Exception)
@@ -122,6 +122,8 @@ namespace KhuyenMai
                                 {
                                     lbthongbapcapnhat.Text = "Có lỗi kết nối mạng";
                                 }));
+                                consqlite.capnhatngayKM("Lỗi");
+                                consqlite.capnhattongmaKM("Lỗi");
                                 return;
                             }
                             
@@ -132,13 +134,13 @@ namespace KhuyenMai
                             {
                                 lbthongbapcapnhat.Text = "Có bản cập nhật mới khởi động lại chương trình để cập nhật";
                             }));
-                            consqlite.capnhatngayKM("-");
-                            throw;
+                            consqlite.capnhatngayKM("Lỗi");
+                            return;
                         }
                        
                     }
 
-                    if (ngaydata2 != ngaydata)
+                    else if (ngaydataCL != ngaydataSV)
                     {
                         try
                         {
@@ -154,6 +156,7 @@ namespace KhuyenMai
                                 {
                                     lbthongbapcapnhat.Text = "Có lỗi kết nối mạng";
                                 }));
+                                consqlite.capnhatngayData("Lỗi");
                                 return;
                             }
                             
@@ -162,7 +165,7 @@ namespace KhuyenMai
                             {
                                 NotificationHts("Vừa Cập Nhật bảng barcode xong\nOk, triển chiêu.");
                             }));
-                            consqlite.capnhatngayData(ngaydata);
+                            consqlite.capnhatngayData(ngaydataSV);
                         }
                         catch (Exception)
                         {
@@ -170,20 +173,24 @@ namespace KhuyenMai
                             {
                                 lbthongbapcapnhat.Text = "Có bản cập nhật mới khởi động lại chương trình để cập nhật";
                             }));
-                            consqlite.capnhatngayData("-");
+                            consqlite.capnhatngayData("Lỗi");
                             throw;
                         }
                         
+                    }
+                    else
+                    {
+                        
+                        lbcapnhat.Invoke(new MethodInvoker(delegate ()
+                        {
+                            lbcapnhat.Text = ngaykmCL;
+                        }));
                     }
                     datag1.Invoke(new MethodInvoker(delegate ()
                     {
                         var conkm = ketnoikhuyenmai.Khoitao();
                         datag1.DataSource = conkm.bangKhuyenmai();
 
-                    }));
-                    lbcapnhat.Invoke(new MethodInvoker(delegate ()
-                    {
-                        lbcapnhat.Text = ngaykm2;
                     }));
                 }
                 catch (Exception)
@@ -197,7 +204,6 @@ namespace KhuyenMai
                 }
 
                 Thread.Sleep(1800000);
-                //Thread.Sleep(3000);
             }
 
 
