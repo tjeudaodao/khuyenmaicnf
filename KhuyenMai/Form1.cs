@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Globalization;
 using System.IO;
+using System.Diagnostics;
 
 namespace KhuyenMai
 {
@@ -21,7 +22,7 @@ namespace KhuyenMai
         bool chay = true;
         DataTable dt = new DataTable();
         Thread capnhat;
-        //Thread loadBang;
+        Thread closecheckupdate;
 
         public Form1()
         {
@@ -30,9 +31,23 @@ namespace KhuyenMai
             capnhat.IsBackground = true;
             capnhat.Start();
 
-            //loadBang = new Thread(hamloadBang);
-            //loadBang.IsBackground = true;
-            //loadBang.Start();
+            closecheckupdate = new Thread(CloseCheckupdate);
+            closecheckupdate.IsBackground = true;
+            closecheckupdate.Start();
+        }
+        public void CloseCheckupdate()
+        {
+            Process[] GetPArry = Process.GetProcesses();
+            foreach (Process testProcess in GetPArry)
+            {
+                string ProcessName = testProcess.ProcessName;
+                if (ProcessName.CompareTo("checkUpdate") == 0)
+                {
+                    testProcess.Kill();
+                    return;
+                }
+
+            }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
